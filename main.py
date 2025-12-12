@@ -55,7 +55,7 @@ async def get_api_key(api_key: str = Security(api_key_header)):
 # -----------------------------
 # 認証付きエンドポイントの例
 # -----------------------------
-@app.get("/secure-info")
+@app.get("/")
 async def secure_info(
     request: Request,
     api_key: str = Security(get_api_key),  # ここでAPIキー認証を強制
@@ -70,11 +70,3 @@ async def secure_info(
         "client_ip": client_ip,
         "path": str(request.url.path),
     }
-
-
-# 認証なしの疎通確認用（任意）
-@app.get("/")
-async def healthcheck(request: Request):
-    client_ip = get_client_ip(request)
-    logger.info(f"Healthcheck from IP={client_ip}")
-    return {"status": "ok", "client_ip": client_ip}
